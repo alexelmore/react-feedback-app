@@ -7,7 +7,7 @@ import RatingSelect from "./RatingSelect";
 function FeedbackForm({ handleAdd }) {
   // State for form
   const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -20,6 +20,8 @@ function FeedbackForm({ handleAdd }) {
         rating,
       };
       handleAdd(newFeedback);
+      setRating(10);
+      setReview("");
     }
   };
 
