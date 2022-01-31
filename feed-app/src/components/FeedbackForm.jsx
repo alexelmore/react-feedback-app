@@ -4,7 +4,7 @@ import Button from "./shared/Button";
 import RatingSelect from "./RatingSelect";
 // FeedbackForm Component
 
-function FeedbackForm() {
+function FeedbackForm({ handleAdd }) {
   // State for form
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
@@ -12,9 +12,15 @@ function FeedbackForm() {
   const [message, setMessage] = useState("");
 
   // Function to handle form submission
-  const submitForm = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("fired from form:", review);
+    if (review.trim().length >= 10) {
+      const newFeedback = {
+        text: review,
+        rating,
+      };
+      handleAdd(newFeedback);
+    }
   };
 
   // Function to handle user entered in text
@@ -34,7 +40,7 @@ function FeedbackForm() {
   };
   return (
     <Card>
-      <form onSubmit={submitForm}>
+      <form onSubmit={handleSubmit}>
         <h2>How would you rate your service with us?</h2>
         <RatingSelect select={(rating) => setRating(rating)} />
         <div className="input-group">
