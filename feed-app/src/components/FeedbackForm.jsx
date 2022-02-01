@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
 import RatingSelect from "./RatingSelect";
-import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 // FeedbackForm Component
 
@@ -12,8 +11,18 @@ function FeedbackForm({ handleAdd }) {
   const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
+  // Context provider for global item state
+  const { addFeedBackItem, feedbackEdit } = useContext(FeedbackContext);
 
-  const { addFeedBackItem } = useContext(FeedbackContext);
+  // UseEffect hook to watch feedbackEdit for changes
+  useEffect(() => {
+    console.log(feedbackEdit);
+    if (feedbackEdit.edit === true) {
+      setBtnDisabled(false);
+      setReview(feedbackEdit.item.text);
+      setRating(feedbackEdit.item.rating);
+    }
+  }, [feedbackEdit]);
 
   // Function to handle form submission
   const handleSubmit = (e) => {
