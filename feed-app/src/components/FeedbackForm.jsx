@@ -11,8 +11,11 @@ function FeedbackForm({ handleAdd }) {
   const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
+
   // Context provider for global item state
-  const { addFeedBackItem, feedbackEdit } = useContext(FeedbackContext);
+  const { addFeedBackItem, feedbackEdit, updateFeedBackItem } = useContext(
+    FeedbackContext
+  );
 
   // UseEffect hook to watch feedbackEdit for changes
   useEffect(() => {
@@ -32,8 +35,11 @@ function FeedbackForm({ handleAdd }) {
         text: review,
         rating,
       };
-      addFeedBackItem(newFeedback);
-      setRating(10);
+      if (feedbackEdit.edit === true) {
+        updateFeedBackItem(feedbackEdit.item.id, newFeedback);
+      } else {
+        addFeedBackItem(newFeedback);
+      }
       setReview("");
     }
   };

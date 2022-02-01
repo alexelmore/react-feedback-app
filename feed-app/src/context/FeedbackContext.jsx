@@ -33,14 +33,23 @@ export const FeedbackProvider = ({ children }) => {
       id: item.id,
     });
   };
+
+  // Function that updates the data when user edits an item
+  const updateFeedBackItem = (id, updItem) => {
+    setFeedback(
+      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+    );
+  };
+
   return (
     <FeedbackContext.Provider
       value={{
+        feedbackEdit,
         feedback,
         deleteFeedBackItem,
         addFeedBackItem,
         editFeedBackItem,
-        feedbackEdit,
+        updateFeedBackItem,
       }}
     >
       {children}
