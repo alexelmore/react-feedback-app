@@ -26,8 +26,12 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   // Function that handles the deletion of a feedback item
-  const deleteFeedBackItem = (id) => {
+  const deleteFeedBackItem = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
+      // Async fetch DELETE Request, removing an item when user clicks the item's x cta
+      await fetch(`http://localhost:3001/feedback/${id}`, {
+        method: "DELETE",
+      });
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
@@ -56,9 +60,18 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   // Function that updates the data when user edits an item
-  const updateFeedBackItem = (id, updItem) => {
+  const updateFeedBackItem = async (id, updItem) => {
+    // Make a PUT fetch request with the item that the user updated
+    const response = await fetch(`http://localhost:3001/feedback/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updItem),
+    });
+    const data = await response.json();
     setFeedback(
-      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+      feedback.map((item) => (item.id === id ? { ...item, ...data } : item))
     );
   };
 
