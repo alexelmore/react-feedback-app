@@ -1,6 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import FeedbackData from "../data/FeedbackData";
-import { v4 as uuidv4 } from "uuid";
 
 const FeedbackContext = createContext();
 
@@ -17,8 +15,7 @@ export const FeedbackProvider = ({ children }) => {
     fetchFeedback();
   }, []);
 
-  // Function send a fetch request to db.json
-  // Fetch feedback
+  // Function that sends a GET fetch request to db.json
   const fetchFeedback = async () => {
     const response = await fetch(
       "http://localhost:3001/feedback?_sort=id&_order=desc"
@@ -36,9 +33,17 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   // Function that handles the addition of a new feedback item
-  const addFeedBackItem = (item) => {
-    item.id = uuidv4();
-    setFeedback([item, ...feedback]);
+  const addFeedBackItem = async (item) => {
+    // Make a POST fetch request and add item that user submitted to json.db
+    const response = await fetch("http://localhost:3001/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    });
+    const data = await response.json();
+    setFeedback([data, ...feedback]);
   };
 
   // Function that handles the editing of a feedback item
